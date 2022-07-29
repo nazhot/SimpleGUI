@@ -38,6 +38,23 @@ public class DropDown extends Component<DropDown> {
 		this.titleStroke = true;
 	}
 	
+	public DropDown(PApplet theParent, float x_, float y_, float w_, float h_) {
+		super(theParent, x_, y_, w_, h_);
+		this.TYPE = "DropDown";
+		this.entries = new ArrayList<String>();
+		this.selected = new ArrayList<Boolean>();
+		this.multiSelect = false;
+		this.isOpen = false;
+		this.alwaysOpen = false;
+		this.isVertical = true;
+		this.direction = "DOWN";
+		this.selectAll = false;
+		this.titleHorizontalOrientation = PConstants.LEFT;
+		this.entryHorizontalOrientation = PConstants.LEFT;
+		this.entryVsTitleOrientationPercent = 0;
+		this.titleStroke = true;
+	}
+	
 	public boolean initialize(Screen screenParent) {
 		this.entryHeight = this.getH(screenParent);
 		this.entryWidth = this.getW(screenParent);

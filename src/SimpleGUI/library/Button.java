@@ -16,6 +16,14 @@ public class Button extends Component<Button> {
 		this.shapeMode = PConstants.CORNER;
 		this.asLabel = false;
 	}
+	
+	public Button(PApplet theParent, float x_, float y_, float w_, float h_) {
+		super(theParent, x_, y_, w_, h_);
+		this.TYPE = "Button";
+		this.shape = "rectangle";
+		this.shapeMode = PConstants.CORNER;
+		this.asLabel = false;
+	}
 
 	public void draw(Screen screenParent) {
 		float x = this.getX(screenParent);

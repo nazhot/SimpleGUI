@@ -12,6 +12,12 @@ public class Image extends Component<Image> {
 		this.TYPE = "Image";
 		this.imageFileName = "";
 	}
+	
+	public Image(PApplet myParent, float x_, float y_, float w_, float h_) {
+		super(myParent, x_, y_, w_, h_);
+		this.TYPE = "Image";
+		this.imageFileName = "";
+	}
 
 
 	public void draw(Screen screenParent) {

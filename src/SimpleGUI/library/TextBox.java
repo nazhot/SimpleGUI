@@ -19,6 +19,15 @@ public class TextBox extends Component<TextBox> {
 		this.keyReleased = true;
 		this.defaultValue = "";
 	}
+	
+	public TextBox(PApplet theParent, float x_, float y_, float w_, float h_) {
+		super(theParent, x_, y_, w_, h_);
+		this.TYPE = "TextBox";
+		horizontalOrientation = PConstants.LEFT;
+		this.isSelected = false;
+		this.keyReleased = true;
+		this.defaultValue = "";
+	}
 
 	public void draw(Screen screenParent) {
 		float x = this.getX(screenParent);

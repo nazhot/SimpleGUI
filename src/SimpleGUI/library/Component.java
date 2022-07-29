@@ -43,6 +43,23 @@ public class Component <T extends Component<T>> {
 		this.textScalar = 0;
 	}
 	
+	public Component(PApplet theParent, float x_, float y_, float w_, float h_) {
+		this.myParent = theParent;
+		this.graphics = this.myParent.g;
+		this.initX = String.valueOf(x_) + "a";
+		this.initY = String.valueOf(y_) + "a";
+		this.initW = String.valueOf(w_) + "a";
+		this.initH = String.valueOf(h_) + "a";
+		this.name = "";
+		this.label = "";
+		this.value = "";
+		this.drawOrder = 0;
+		this.strokeWeight = 1;
+		this.rounding = 0;
+		this.textSize = 12;
+		this.textScalar = 0;
+	}
+
 	public boolean initialize(Screen screenParent) {
 		return false;
 	}
@@ -61,8 +78,16 @@ public class Component <T extends Component<T>> {
 		return this.TYPE;
 	}
 	public float convertDimension(String dimension, Screen screenParent) {
-		float number = Float.parseFloat(dimension.substring(0, dimension.length() - 1));
+		int numberSubtract = 1;
 		String modifier = dimension.substring(dimension.length() - 1);
+		try {
+			Integer.parseInt(modifier);
+			modifier = "a";
+			numberSubtract = 0;
+		} catch(NumberFormatException e) {
+		}
+		float number = Float.parseFloat(dimension.substring(0, dimension.length() - numberSubtract));
+
 		switch(modifier) {
 		case "a":
 			return number;
@@ -80,10 +105,10 @@ public class Component <T extends Component<T>> {
 		return screenParent.getY() + this.convertDimension(this.initY, screenParent);
 	}
 	public float getW(Screen screenParent) {
-		return screenParent.getW() + this.convertDimension(this.initW, screenParent);
+		return this.convertDimension(this.initW, screenParent);
 	}
 	public float getH(Screen screenParent) {
-		return screenParent.getH() + this.convertDimension(this.initH, screenParent);
+		return this.convertDimension(this.initH, screenParent);
 	}
 	public String getName() {
 		return this.name;

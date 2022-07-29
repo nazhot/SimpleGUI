@@ -37,6 +37,22 @@ public class Slider extends Component<Slider> {
 		this.value = "0";
 	}
 	
+	public Slider(PApplet theParent, float x_, float y_, float w_, float h_) {
+		super(theParent, x_, y_, w_, h_);
+		this.TYPE = "Slider";
+		this.min = 0;
+		this.max = 1;
+		this.lineWeight = 4;
+		this.tickWeight = 2;
+		this.slideStrokeWeight = 3;
+		this.slideMoving = false;
+		this.titlePosition = "LEFT";
+		this.isDefinedJumps = false;
+		this.jumpAmount = 0;
+		this.numJumps = 0;
+		this.value = "0";
+	}
+	
 	public boolean initialize(Screen screenParent) {
 		this.slidePosition = this.getX(screenParent);
 		return true;

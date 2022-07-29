@@ -9,6 +9,11 @@ public class Text extends Component<Text> {
 		super(myParent, x_, y_, w_, h_);
 		this.TYPE = "Text";
 	}
+	
+	public Text(PApplet myParent, float x_, float y_, float w_, float h_) {
+		super(myParent, x_, y_, w_, h_);
+		this.TYPE = "Text";
+	}
 
 
 	public void draw(Screen screenParent) {

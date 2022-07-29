@@ -20,6 +20,17 @@ public class Screen {
 		this.graphics = theParent.g;
 		this.components = new ArrayList<Component>();
 		this.name = "";
+		this.initX = ix;
+		this.initY = iy;
+		this.initW = iw;
+		this.initH = ih;
+	}
+	
+	public Screen(PApplet theParent, float ix, float iy, float iw, float ih) {
+		this.initX = String.valueOf(ix) + "a";
+		this.initY = String.valueOf(iy) + "a";
+		this.initW = String.valueOf(iw) + "a";
+		this.initH = String.valueOf(ih) + "a";
 	}
 
 
@@ -119,8 +130,16 @@ public class Screen {
 	}
 
 	float convertDimension(String dimension){
-		float number = Float.parseFloat(dimension.substring(0, dimension.length() - 1));
+		int numberSubtract = 1;
 		String modifier = dimension.substring(dimension.length() - 1);
+		try {
+			Integer.parseInt(modifier);
+			modifier = "a";
+			numberSubtract = 0;
+		} catch(NumberFormatException e) {
+		}
+		float number = Float.parseFloat(dimension.substring(0, dimension.length() - numberSubtract));
+		
 		switch(modifier) {
 		case "a":
 			return number;
