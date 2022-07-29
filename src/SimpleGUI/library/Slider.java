@@ -53,17 +53,17 @@ public class Slider extends Component<Slider> {
 		this.value = "0";
 	}
 	
-	public boolean initialize(Screen screenParent) {
-		this.slidePosition = this.getX(screenParent);
+	public boolean initialize() {
+		this.slidePosition = this.getX();
 		return true;
 		
 	}
 
-	public void draw(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public void draw() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		if (!this.myParent.mousePressed) {
 			this.slideMoving = false;
 		}
@@ -107,11 +107,11 @@ public class Slider extends Component<Slider> {
 		}
 	}
 
-	public boolean mouseOver(Screen screenParent, boolean calledByScreen) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public boolean mouseOver(boolean calledByScreen) {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		boolean mouseOver = (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, this.slidePosition, y) <= h);
 		if (calledByScreen) {
 			if (mouseOver) {
@@ -161,8 +161,8 @@ public class Slider extends Component<Slider> {
 		return this;
 	}
 
-	public void reset(Screen screenParent){
-		this.slidePosition = this.getX(screenParent);
+	public void reset(){
+		this.slidePosition = this.getX();
 	}
 
 }

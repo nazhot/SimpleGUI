@@ -36,14 +36,14 @@ public class Screen {
 
 	public void draw() {
 		for (Component component : components) {
-			component.draw(this);
+			component.draw();
 		}
 	}
 
 	public String checkClick() {
 		for (int i = this.components.size() - 1; i >= 0; i--) {
 			Component component = this.components.get(i);
-			if (component.mouseOver(this, true)) {
+			if (component.mouseOver(true)) {
 				return this.name + ":" + component.getType() + ":" + component.getName();
 			}
 		}
@@ -60,7 +60,7 @@ public class Screen {
 
 	public void reset() {
 		for (Component com : this.components) {
-			com.reset(this);
+			com.reset();
 		}
 	}
 
@@ -87,7 +87,8 @@ public class Screen {
 	}
 
 	public void addComponent(Component c_) {
-		c_.initialize(this);
+		c_.setScreen(this);
+		c_.initialize();
 		boolean isAdded = false;
 		for (int i = 0; i < this.components.size(); i++) {
 			if (c_.getDrawOrder() <= this.components.get(i).getDrawOrder()) {
@@ -115,6 +116,12 @@ public class Screen {
 			if (allComponents.next().getName().contains(c_)){
 				allComponents.remove();
 			}
+		}
+	}
+	
+	public void updateComponentsScreen() {
+		for (Component c : this.components) {
+			c.setScreen(this);
 		}
 	}
 

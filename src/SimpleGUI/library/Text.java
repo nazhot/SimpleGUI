@@ -16,11 +16,11 @@ public class Text extends Component<Text> {
 	}
 
 
-	public void draw(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public void draw() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		this.graphics.textSize(this.textSize);
 		this.graphics.fill(this.textColor);
 		this.graphics.textAlign(PConstants.LEFT, PConstants.TOP);

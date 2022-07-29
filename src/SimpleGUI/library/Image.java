@@ -20,11 +20,11 @@ public class Image extends Component<Image> {
 	}
 
 
-	public void draw(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public void draw() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		PImage image = this.myParent.loadImage(this.imageFileName);
 		if (image != null) {
 			this.graphics.image(image, x, y, w, h);

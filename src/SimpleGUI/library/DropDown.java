@@ -55,18 +55,18 @@ public class DropDown extends Component<DropDown> {
 		this.titleStroke = true;
 	}
 	
-	public boolean initialize(Screen screenParent) {
-		this.entryHeight = this.getH(screenParent);
-		this.entryWidth = this.getW(screenParent);
+	public boolean initialize() {
+		this.entryHeight = this.getH();
+		this.entryWidth = this.getW();
 		return true;
 		
 	}
 
-	public void draw(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public void draw() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		//displaying the title block
 		this.graphics.rectMode(PConstants.CORNER);
 		this.graphics.fill(this.fillColor);
@@ -150,11 +150,11 @@ public class DropDown extends Component<DropDown> {
 	}
 
 
-	public int mouseOverEntry(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public int mouseOverEntry() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - this.entryWidth);
 		if (this.myParent.mouseX >= x + entryXOffset && this.myParent.mouseX <= x + this.entryWidth + entryXOffset) {
 			for (int i = 0; i < this.entries.size(); i++) {
@@ -166,15 +166,15 @@ public class DropDown extends Component<DropDown> {
 		return -1;
 	}
 
-	public boolean mouseOver(Screen screenParent, boolean calledByScreen) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public boolean mouseOver(boolean calledByScreen) {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		boolean isMouseOver = (this.myParent.mouseX >= x && this.myParent.mouseX <= x + w && this.myParent.mouseY >= y && this.myParent.mouseY <= y + h);
 		boolean isMouseOverEntry = false;
 		if (this.isOpen || this.alwaysOpen) {
-			int index = this.mouseOverEntry(screenParent);
+			int index = this.mouseOverEntry();
 			if (index >= 0) {
 				isMouseOverEntry = true;
 				if (this.selectAll && index == 0) {

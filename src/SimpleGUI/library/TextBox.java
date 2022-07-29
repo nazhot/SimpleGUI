@@ -29,11 +29,11 @@ public class TextBox extends Component<TextBox> {
 		this.defaultValue = "";
 	}
 
-	public void draw(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public void draw() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		if (this.myParent.keyPressed && this.isSelected && this.keyReleased) {
 			char key = this.myParent.key;
 			this.keyReleased = false;
@@ -52,12 +52,12 @@ public class TextBox extends Component<TextBox> {
 			this.keyReleased = true;
 		}
 
-		if (this.myParent.mousePressed && !this.mouseOver(screenParent, false)) {
+		if (this.myParent.mousePressed && !this.mouseOver(false)) {
 			this.isSelected = false;
 		}
 
 		this.graphics.rectMode(PConstants.CORNER);
-		if (this.isSelected || this.mouseOver(screenParent, false)) {
+		if (this.isSelected || this.mouseOver(false)) {
 			this.graphics.fill(hoverColor);
 		} else {
 			this.graphics.fill(this.fillColor);
@@ -82,11 +82,11 @@ public class TextBox extends Component<TextBox> {
 	}
 
 
-	public boolean mouseOver(Screen screenParent, boolean calledByScreen) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public boolean mouseOver(boolean calledByScreen) {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		boolean mouseOver = (this.myParent.mouseX >= x && this.myParent.mouseX <= x + w && this.myParent.mouseY >= y && this.myParent.mouseY <= y + h);
 		if (calledByScreen) {
 			this.isSelected = mouseOver;

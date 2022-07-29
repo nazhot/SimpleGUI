@@ -25,11 +25,11 @@ public class Button extends Component<Button> {
 		this.asLabel = false;
 	}
 
-	public void draw(Screen screenParent) {
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public void draw() {
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		float textX = x; //default case, for RADIUS or CENTER
 		float textY = y;
 
@@ -52,7 +52,7 @@ public class Button extends Component<Button> {
 		this.graphics.fill(this.fillColor);
 		this.graphics.strokeWeight(this.strokeWeight);
 		this.graphics.stroke(this.strokeColor);
-		if (!this.asLabel && this.mouseOver(screenParent, false)) this.graphics.fill(hoverColor); //override fill color if mouse is over and this isn't a label
+		if (!this.asLabel && this.mouseOver(false)) this.graphics.fill(hoverColor); //override fill color if mouse is over and this isn't a label
 		if (this.strokeWeight == 0)                 this.graphics.noStroke();
 
 		if (this.shape.equals("rectangle")) {
@@ -68,11 +68,11 @@ public class Button extends Component<Button> {
 	}
 
 
-	public boolean mouseOver(Screen screenParent, boolean calledByScreen) { //get the top left and bottom right x / y coordinates, and make sure mouse x / y are between them
-		float x = this.getX(screenParent);
-		float y = this.getY(screenParent);
-		float w = this.getW(screenParent);
-		float h = this.getH(screenParent);
+	public boolean mouseOver(boolean calledByScreen) { //get the top left and bottom right x / y coordinates, and make sure mouse x / y are between them
+		float x = this.getX();
+		float y = this.getY();
+		float w = this.getW();
+		float h = this.getH();
 		if (this.shape.equals("rectangle")) {
 			switch(this.shapeMode) {
 			case PConstants.CORNER:
