@@ -6,38 +6,33 @@ import java.util.*;
 
 
 public class Screen {
-
+	private String initX;
+	private String initY;
+	private String initW;
+	private String initH;
 	private PApplet myParent;
 	private PGraphics graphics;
 	private ArrayList<Component> components;
 	private String name;
-	private int gridRows;
-	private int gridCols;
-	private float rowMultiplier;
-	private float colMultiplier;
 
-	public Screen(PApplet theParent) {
+	public Screen(PApplet theParent, String ix, String iy, String iw, String ih) {
 		this.myParent = theParent;
 		this.graphics = theParent.g;
 		this.components = new ArrayList<Component>();
 		this.name = "";
-		this.gridRows = this.myParent.height;
-		this.gridCols = this.myParent.width;
-		this.rowMultiplier = 1;
-		this.colMultiplier = 1;
 	}
 
 
 	public void draw() {
 		for (Component component : components) {
-			component.draw();
+			component.draw(this);
 		}
 	}
 
 	public String checkClick() {
 		for (int i = this.components.size() - 1; i >= 0; i--) {
 			Component component = this.components.get(i);
-			if (component.mouseOver(true)) {
+			if (component.mouseOver(this, true)) {
 				return this.name + ":" + component.getType() + ":" + component.getName();
 			}
 		}
@@ -54,7 +49,7 @@ public class Screen {
 
 	public void reset() {
 		for (Component com : this.components) {
-			com.reset();
+			com.reset(this);
 		}
 	}
 
@@ -81,8 +76,8 @@ public class Screen {
 	}
 
 	public void addComponent(Component c_) {
+		c_.initialize(this);
 		boolean isAdded = false;
-		c_.setMultipliers(this.colMultiplier, this.rowMultiplier);
 		for (int i = 0; i < this.components.size(); i++) {
 			if (c_.getDrawOrder() <= this.components.get(i).getDrawOrder()) {
 				this.components.add(i, c_);
@@ -123,37 +118,31 @@ public class Screen {
 		}
 	}
 
-	public void setComponenetsMultipliers(){
-		for (Component c : this.components){
-			c.setMultipliers(this.colMultiplier, this.rowMultiplier);
+	float convertDimension(String dimension){
+		float number = Float.parseFloat(dimension.substring(0, dimension.length() - 1));
+		String modifier = dimension.substring(dimension.length() - 1);
+		switch(modifier) {
+		case "a":
+			return number;
+		case "w":
+			return number * 1.0f * this.myParent.width;
+		case "h":
+			return number * 1.0f * this.myParent.height;
 		}
+		return 0;
 	}
 
-	public Screen setGridRows(int g_) {
-		this.gridRows = g_;
-		this.rowMultiplier = 1.0f * g_ / this.myParent.height;
-		this.setComponenetsMultipliers();
-		return this;
-	}
 
-	public Screen setGridCols(int g_) {
-		this.gridCols = g_;
-		this.colMultiplier = 1.0f * g_ / this.myParent.width;
-		this.setComponenetsMultipliers();
-		return this;
+	public float getX() {
+		return this.convertDimension(this.initX);
 	}
-
-	public Screen setRowMultiplier(float r_) {
-		this.rowMultiplier = r_;
-		this.gridRows = PApplet.round(r_ * this.myParent.height);
-		this.setComponenetsMultipliers();
-		return this;
+	public float getY() {
+		return this.convertDimension(this.initY);
 	}
-
-	public Screen setColMultiplier(float c_) {
-		this.colMultiplier = c_;
-		this.gridCols = PApplet.round(c_ * this.myParent.width);
-		this.setComponenetsMultipliers();
-		return this;
+	public float getW() {
+		return this.convertDimension(this.initW);
+	}
+	public float getH() {
+		return this.convertDimension(this.initH);
 	}
 }

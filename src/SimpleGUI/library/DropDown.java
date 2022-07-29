@@ -21,13 +21,11 @@ public class DropDown extends Component<DropDown> {
 	private float entryVsTitleOrientationPercent; //position of the entry boxes compared to the title box (0 is fully left/up, 1 is fully right/down)
 	private boolean titleStroke;                  //whether the title block has stroke lines or not
 
-	public DropDown(PApplet theParent, float x_, float y_, float w_, float h_) {
+	public DropDown(PApplet theParent, String x_, String y_, String w_, String h_) {
 		super(theParent, x_, y_, w_, h_);
 		this.TYPE = "DropDown";
 		this.entries = new ArrayList<String>();
 		this.selected = new ArrayList<Boolean>();
-		this.entryHeight = h_;
-		this.entryWidth = w_;
 		this.multiSelect = false;
 		this.isOpen = false;
 		this.alwaysOpen = false;
@@ -39,9 +37,19 @@ public class DropDown extends Component<DropDown> {
 		this.entryVsTitleOrientationPercent = 0;
 		this.titleStroke = true;
 	}
+	
+	public boolean initialize(Screen screenParent) {
+		this.entryHeight = this.getH(screenParent);
+		this.entryWidth = this.getW(screenParent);
+		return true;
+		
+	}
 
-
-	public void draw() {
+	public void draw(Screen screenParent) {
+		float x = this.getX(screenParent);
+		float y = this.getY(screenParent);
+		float w = this.getW(screenParent);
+		float h = this.getH(screenParent);
 		//displaying the title block
 		this.graphics.rectMode(PConstants.CORNER);
 		this.graphics.fill(this.fillColor);
@@ -50,7 +58,7 @@ public class DropDown extends Component<DropDown> {
 		if (!this.titleStroke) {
 			this.graphics.noStroke();
 		}
-		this.graphics.rect(this.x, this.y, this.w, this.h, this.rounding);
+		this.graphics.rect(x, y, w, h, this.rounding);
 
 		//displaying each entry box, if applicable
 		this.graphics.fill(this.textColor);
@@ -70,13 +78,13 @@ public class DropDown extends Component<DropDown> {
 			}
 		}
 		this.graphics.textAlign(this.titleHorizontalOrientation, PConstants.CENTER);
-		float titleX = this.x + this.w * 0.02f;
+		float titleX = x + w * 0.02f;
 		if (this.titleHorizontalOrientation == PConstants.CENTER) {
-			titleX += this.w * 0.48f;
+			titleX += w * 0.48f;
 		} else if (this.titleHorizontalOrientation == PConstants.RIGHT) {
-			titleX += this.w * 0.96f;
+			titleX += w * 0.96f;
 		}
-		this.graphics.text(tempTitle, titleX, this.y + this.h / 2.0f - this.graphics.textAscent() * this.textScalar);
+		this.graphics.text(tempTitle, titleX, y + h / 2.0f - this.graphics.textAscent() * this.textScalar);
 
 		if (!this.isOpen && !this.alwaysOpen) {
 			return;
@@ -84,16 +92,16 @@ public class DropDown extends Component<DropDown> {
 
 		this.graphics.strokeWeight(this.strokeWeight);
 		this.graphics.stroke(this.strokeColor);
-		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, this.w - this.entryWidth);
-		float rectX = this.x + entryXOffset;
-		float rectY = this.y;
-		float textX = this.x + this.entryWidth * 0.02f + entryXOffset;
-		float textY = this.y + this.h / 2.0f - this.graphics.textAscent() * this.textScalar;
+		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - this.entryWidth);
+		float rectX = x + entryXOffset;
+		float rectY = y;
+		float textX = x + this.entryWidth * 0.02f + entryXOffset;
+		float textY = y + h / 2.0f - this.graphics.textAscent() * this.textScalar;
 		if (this.isVertical) {
-			rectY += this.h;
-			textY += this.h / 2.0f + this.entryHeight / 2.0f;
+			rectY += h;
+			textY += h / 2.0f + this.entryHeight / 2.0f;
 		} else {
-			rectY += this.h / 2.0f - this.entryHeight / 2.0f;
+			rectY += h / 2.0f - this.entryHeight / 2.0f;
 			rectX += this.entryWidth;
 			textX += this.entryWidth;
 		}
@@ -125,11 +133,15 @@ public class DropDown extends Component<DropDown> {
 	}
 
 
-	public int mouseOverEntry() {
-		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, this.w - this.entryWidth);
-		if (this.myParent.mouseX >= this.x + entryXOffset && this.myParent.mouseX <= this.x + this.entryWidth + entryXOffset) {
+	public int mouseOverEntry(Screen screenParent) {
+		float x = this.getX(screenParent);
+		float y = this.getY(screenParent);
+		float w = this.getW(screenParent);
+		float h = this.getH(screenParent);
+		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - this.entryWidth);
+		if (this.myParent.mouseX >= x + entryXOffset && this.myParent.mouseX <= x + this.entryWidth + entryXOffset) {
 			for (int i = 0; i < this.entries.size(); i++) {
-				if (this.myParent.mouseY >= this.y + this.h + this.entryHeight * i && this.myParent.mouseY <= this.y + this.h + this.entryHeight * (i + 1)) {
+				if (this.myParent.mouseY >= y + h + this.entryHeight * i && this.myParent.mouseY <= y + h + this.entryHeight * (i + 1)) {
 					return i;
 				}
 			}
@@ -137,11 +149,15 @@ public class DropDown extends Component<DropDown> {
 		return -1;
 	}
 
-	public boolean mouseOver(boolean calledByScreen) {
-		boolean isMouseOver = (this.myParent.mouseX >= this.x && this.myParent.mouseX <= this.x + this.w && this.myParent.mouseY >= this.y && this.myParent.mouseY <= this.y + this.h);
+	public boolean mouseOver(Screen screenParent, boolean calledByScreen) {
+		float x = this.getX(screenParent);
+		float y = this.getY(screenParent);
+		float w = this.getW(screenParent);
+		float h = this.getH(screenParent);
+		boolean isMouseOver = (this.myParent.mouseX >= x && this.myParent.mouseX <= x + w && this.myParent.mouseY >= y && this.myParent.mouseY <= y + h);
 		boolean isMouseOverEntry = false;
 		if (this.isOpen || this.alwaysOpen) {
-			int index = this.mouseOverEntry();
+			int index = this.mouseOverEntry(screenParent);
 			if (index >= 0) {
 				isMouseOverEntry = true;
 				if (this.selectAll && index == 0) {
@@ -269,6 +285,11 @@ public class DropDown extends Component<DropDown> {
 		this.titleStroke = t_;
 		return this;
 	}
+	
+	public DropDown setSelectedColor(int s_) {
+		this.selectedColor = s_;
+		return this;
+	}
 
 	public String getValue() {
 		String val = "";
@@ -283,14 +304,4 @@ public class DropDown extends Component<DropDown> {
 		return val;
 	}
 
-	public DropDown setMultipliers(float colMultiplier, float rowMultiplier) {
-		this.x *= colMultiplier;
-		this.w *= colMultiplier;
-		this.y *= rowMultiplier;
-		this.h *= rowMultiplier;
-		this.entryWidth *= colMultiplier;
-		this.entryHeight *= rowMultiplier;
-		this.textSize *= colMultiplier;
-		return this;
-	}
 }

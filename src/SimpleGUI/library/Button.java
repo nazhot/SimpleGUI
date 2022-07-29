@@ -9,7 +9,7 @@ public class Button extends Component<Button> {
 	private int hoverColor; //color to turn the fill color when the mouse is hovered over the button
 	private boolean asLabel;  //whether the button should just be a label or an actual button. Label disables hoverColor, clicks still register
 
-	public Button(PApplet theParent, float x_, float y_, float w_, float h_) {
+	public Button(PApplet theParent, String x_, String y_, String w_, String h_) {
 		super(theParent, x_, y_, w_, h_);
 		this.TYPE = "Button";
 		this.shape = "rectangle";
@@ -17,18 +17,22 @@ public class Button extends Component<Button> {
 		this.asLabel = false;
 	}
 
-	public void draw() {
-		float textX = this.x; //default case, for RADIUS or CENTER
-		float textY = this.y;
+	public void draw(Screen screenParent) {
+		float x = this.getX(screenParent);
+		float y = this.getY(screenParent);
+		float w = this.getW(screenParent);
+		float h = this.getH(screenParent);
+		float textX = x; //default case, for RADIUS or CENTER
+		float textY = y;
 
 		switch(this.shapeMode) { //set where the text should be displayed based on the shape mode
 		case PConstants.CORNER: //move from corner to the center
-			textX += this.w / 2.0;
-			textY += this.h / 2.0;
+			textX += w / 2.0;
+			textY += h / 2.0;
 			break;
 		case PConstants.CORNERS: //move from corner to the center, w and h are coordinates of other corner this time
-			textX += (this.w - this.x) / 2.0;
-			textY += (this.h - this.y) / 2.0;
+			textX += (w - x) / 2.0;
+			textY += (h - y) / 2.0;
 			break;
 		}
 
@@ -40,13 +44,13 @@ public class Button extends Component<Button> {
 		this.graphics.fill(this.fillColor);
 		this.graphics.strokeWeight(this.strokeWeight);
 		this.graphics.stroke(this.strokeColor);
-		if (!this.asLabel && this.mouseOver(false)) this.graphics.fill(this.hoverColor); //override fill color if mouse is over and this isn't a label
+		if (!this.asLabel && this.mouseOver(screenParent, false)) this.graphics.fill(hoverColor); //override fill color if mouse is over and this isn't a label
 		if (this.strokeWeight == 0)                 this.graphics.noStroke();
 
 		if (this.shape.equals("rectangle")) {
-			this.graphics.rect(this.x, this.y, this.w, this.h, this.rounding);
+			this.graphics.rect(x, y, w, h, this.rounding);
 		} else if (this.shape.equals("circle")) {
-			this.graphics.ellipse(this.x, this.y, this.w, this.h);
+			this.graphics.ellipse(x, y, w, h);
 		} else {
 			return;
 		}
@@ -56,30 +60,34 @@ public class Button extends Component<Button> {
 	}
 
 
-	public boolean mouseOver(boolean calledByScreen) { //get the top left and bottom right x / y coordinates, and make sure mouse x / y are between them
+	public boolean mouseOver(Screen screenParent, boolean calledByScreen) { //get the top left and bottom right x / y coordinates, and make sure mouse x / y are between them
+		float x = this.getX(screenParent);
+		float y = this.getY(screenParent);
+		float w = this.getW(screenParent);
+		float h = this.getH(screenParent);
 		if (this.shape.equals("rectangle")) {
 			switch(this.shapeMode) {
 			case PConstants.CORNER:
-				return (this.myParent.mouseX >= this.x && this.myParent.mouseX <= this.x + this.w && this.myParent.mouseY >= this.y && this.myParent.mouseY <= this.y + this.h);
+				return (this.myParent.mouseX >= x && this.myParent.mouseX <= x + w && this.myParent.mouseY >= y && this.myParent.mouseY <= y + h);
 			case PConstants.CORNERS:
-				return (this.myParent.mouseX >= this.x && this.myParent.mouseX <= this.w && this.myParent.mouseY >= this.y && this.myParent.mouseY <= this.h);
+				return (this.myParent.mouseX >= x && this.myParent.mouseX <= w && this.myParent.mouseY >= y && this.myParent.mouseY <= h);
 			case PConstants.CENTER:
-				return (this.myParent.mouseX >= this.x - this.w / 2.0 && this.myParent.mouseX <= this.x + this.w / 2.0 && this.myParent.mouseY >= this.y - this.h / 2.0 && this.myParent.mouseY <= this.y + this.h / 2.0);
+				return (this.myParent.mouseX >= x - w / 2.0 && this.myParent.mouseX <= x + w / 2.0 && this.myParent.mouseY >= y - h / 2.0 && this.myParent.mouseY <= y + h / 2.0);
 			case PConstants.RADIUS:
-				return (this.myParent.mouseX >= this.x - this.w && this.myParent.mouseX <= this.x + this.w && this.myParent.mouseY >= this.y - this.h && this.myParent.mouseY <= this.y + this.h);
+				return (this.myParent.mouseX >= x - w && this.myParent.mouseX <= x + w && this.myParent.mouseY >= y - h && this.myParent.mouseY <= y + h);
 			default:
 				return false;
 			}
 		} else if (this.shape.equals("circle")) { //get center point and radius, make sure distance from mouse position to center is less than radius
 			switch(this.shapeMode) {
 			case PConstants.CORNER:
-				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, this.x + this.w / 2.0f, this.y + this.h / 2.0f) <= this.w / 2.0f);
+				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, x + w / 2.0f, y + h / 2.0f) <= w / 2.0f);
 			case PConstants.CORNERS:
-				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, this.x + (this.w - this.x) / 2.0f, this.y + (this.h - this.y) / 2.0f) <= (this.w - this.x) / 2.0f);
+				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, x + (w - x) / 2.0f, y + (h - y) / 2.0f) <= (w - x) / 2.0f);
 			case PConstants.CENTER:
-				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, this.x, this.y) <= this.w / 2.0f);
+				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, x, y) <= w / 2.0f);
 			case PConstants.RADIUS:
-				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, this.x, this.y) <= this.w);
+				return (PApplet.dist(this.myParent.mouseX, this.myParent.mouseY, x, y) <= w);
 			default:
 				return false;
 			}
@@ -102,7 +110,7 @@ public class Button extends Component<Button> {
 	}
 
 	public Button setHoverColor(int h_) {
-		this.hoverColor = h_;
+		hoverColor = h_;
 		return this;
 	}
 

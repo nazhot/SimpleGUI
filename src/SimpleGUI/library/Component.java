@@ -6,10 +6,10 @@ public class Component <T extends Component<T>> {
 	public PApplet myParent;
 	public PGraphics graphics;
 	public String TYPE;
-	public float  x;
-	public float  y;
-	public float  w;
-	public float  h;
+	public String initX;
+	public String initY;
+	public String initW;
+	public String initH;
 	public String name;
 	public String label;
 	public String value;
@@ -26,13 +26,13 @@ public class Component <T extends Component<T>> {
 	public float textScalar;
 
 
-	public Component(PApplet theParent, float x_, float y_, float w_, float h_) {
+	public Component(PApplet theParent, String x_, String y_, String w_, String h_) {
 		this.myParent = theParent;
 		this.graphics = this.myParent.g;
-		this.x = x_;
-		this.y = y_;
-		this.w = w_;
-		this.h = h_;
+		this.initX = x_;
+		this.initY = y_;
+		this.initW = w_;
+		this.initH = h_;
 		this.name = "";
 		this.label = "";
 		this.value = "";
@@ -42,11 +42,15 @@ public class Component <T extends Component<T>> {
 		this.textSize = 12;
 		this.textScalar = 0;
 	}
-
-	public void draw() {
+	
+	public boolean initialize(Screen screenParent) {
+		return false;
 	}
 
-	public boolean mouseOver(boolean calledByScreen) {
+	public void draw(Screen screenParent) {
+	}
+
+	public boolean mouseOver(Screen screenParent, boolean calledByScreen) {
 		return false;
 	}
 
@@ -56,17 +60,30 @@ public class Component <T extends Component<T>> {
 	public String getType() {
 		return this.TYPE;
 	}
-	public float getX() {
-		return this.x;
+	public float convertDimension(String dimension, Screen screenParent) {
+		float number = Float.parseFloat(dimension.substring(0, dimension.length() - 1));
+		String modifier = dimension.substring(dimension.length() - 1);
+		switch(modifier) {
+		case "a":
+			return number;
+		case "w":
+			return number * 1.0f * screenParent.getW();
+		case "h":
+			return number * 1.0f * screenParent.getH();
+		}
+		return 0;
 	}
-	public float getY() {
-		return this.y;
+	public float getX(Screen screenParent) {
+		return screenParent.getX() + this.convertDimension(this.initX, screenParent);
 	}
-	public float getW() {
-		return this.w;
+	public float getY(Screen screenParent) {
+		return screenParent.getY() + this.convertDimension(this.initY, screenParent);
 	}
-	public float getH() {
-		return this.h;
+	public float getW(Screen screenParent) {
+		return screenParent.getW() + this.convertDimension(this.initW, screenParent);
+	}
+	public float getH(Screen screenParent) {
+		return screenParent.getH() + this.convertDimension(this.initH, screenParent);
 	}
 	public String getName() {
 		return this.name;
@@ -83,35 +100,27 @@ public class Component <T extends Component<T>> {
 
 
 
-	public void reset() {
+	public void reset(Screen screenParent) {
 	}
 
-	public T setMultipliers(float colMultiplier, float rowMultiplier) {
-		this.x *= colMultiplier;
-		this.w *= colMultiplier;
-		this.y *= rowMultiplier;
-		this.h *= rowMultiplier;
-		this.textSize *= colMultiplier;
+
+	public T setX(String x_) {
+		this.initX = x_;
 		return (T) this;
 	}
 
-	public T setX(float x_) {
-		this.x = x_;
+	public T setY(String y_) {
+		this.initY = y_;
 		return (T) this;
 	}
 
-	public T setY(float y_) {
-		this.y = y_;
+	public T setW(String w_) {
+		this.initW = w_;
 		return (T) this;
 	}
 
-	public T setW(float w_) {
-		this.w = w_;
-		return (T) this;
-	}
-
-	public T setH(float h_) {
-		this.h = h_;
+	public T setH(String h_) {
+		this.initH = h_;
 		return (T) this;
 	}
 
@@ -164,4 +173,11 @@ public class Component <T extends Component<T>> {
 		this.textSize = t_;
 		return (T) this;
 	}
+
+	public T setTextScalar(float t_) {
+		this.textScalar = t_;
+		return (T) this;
+	}
+
+
 }
