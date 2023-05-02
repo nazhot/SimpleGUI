@@ -2,62 +2,49 @@ package SimpleGUI;
 
 import processing.core.*;
 import java.util.*;
+import processing.data.JSONObject;
 
 
 public class DropDown extends Component<DropDown> {
-	private ArrayList<String> entries;            //the text entries that can be chosen from the dropdown menu
-	private ArrayList<Boolean> selected;          //whether each entry has been selected or not
-	private float entryHeight;                    //height of each entry box
-	private float entryWidth;                     //width of each entry box
-	private boolean multiSelect;                  //whether the user can select more than one entry at a time or not
-	private boolean isOpen;                       //whether the menu is dropped down or not
-	private int selectedColor;                    //fill color for selected entries
-	private boolean alwaysOpen;                   //whether the menu should always be dropped down or not
-	private boolean isVertical;                   //whether the entries should be shown in a vertical line or not
-	private String direction;                     //LEFT, RIGHT, UP, DOWN: the direction the drop down should go from the title block
-	private boolean selectAll;                    //whether the drop down should have a "Select All" button or not
-	private int titleHorizontalOrientation;       //orientation for the text in the title
-	private int entryHorizontalOrientation;       //orientation for the text in each entry
-	private float entryVsTitleOrientationPercent; //position of the entry boxes compared to the title box (0 is fully left/up, 1 is fully right/down)
-	private boolean titleStroke;                  //whether the title block has stroke lines or not
+	private ArrayList<String> entries;                        //the text entries that can be chosen from the dropdown menu
+	private ArrayList<Boolean> selected;                      //whether each entry has been selected or not
+	private String initEntryHeight;                                //height of each entry box
+	private String initEntryWidth;                                 //width of each entry box
+	private boolean multiSelect = false;                      //whether the user can select more than one entry at a time or not
+	private boolean isOpen = false;                           //whether the menu is dropped down or not
+	private int selectedColor;                                //fill color for selected entries
+	private boolean alwaysOpen = false;                       //whether the menu should always be dropped down or not
+	private boolean isVertical = true;                        //whether the entries should be shown in a vertical line or not
+	private String direction = "DOWN";                        //LEFT, RIGHT, UP, DOWN: the direction the drop down should go from the title block
+	private boolean selectAll;                                //whether the drop down should have a "Select All" button or not
+	private int titleHorizontalOrientation = PConstants.LEFT; //orientation for the text in the title
+	private int entryHorizontalOrientation = PConstants.LEFT; //orientation for the text in each entry
+	private float entryVsTitleOrientationPercent = 0;         //position of the entry boxes compared to the title box (0 is fully left/up, 1 is fully right/down)
+	private boolean titleStroke = true;                       //whether the title block has stroke lines or not
 
 	public DropDown(PApplet theParent, String x_, String y_, String w_, String h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "DropDown";
 		this.entries = new ArrayList<String>();
 		this.selected = new ArrayList<Boolean>();
-		this.multiSelect = false;
-		this.isOpen = false;
-		this.alwaysOpen = false;
-		this.isVertical = true;
-		this.direction = "DOWN";
-		this.selectAll = false;
-		this.titleHorizontalOrientation = PConstants.LEFT;
-		this.entryHorizontalOrientation = PConstants.LEFT;
-		this.entryVsTitleOrientationPercent = 0;
-		this.titleStroke = true;
 	}
 	
 	public DropDown(PApplet theParent, float x_, float y_, float w_, float h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "DropDown";
 		this.entries = new ArrayList<String>();
 		this.selected = new ArrayList<Boolean>();
-		this.multiSelect = false;
-		this.isOpen = false;
-		this.alwaysOpen = false;
-		this.isVertical = true;
-		this.direction = "DOWN";
-		this.selectAll = false;
-		this.titleHorizontalOrientation = PConstants.LEFT;
-		this.entryHorizontalOrientation = PConstants.LEFT;
-		this.entryVsTitleOrientationPercent = 0;
-		this.titleStroke = true;
 	}
 	
+	public DropDown(PApplet theParent, JSONObject settings) {
+		super(theParent, settings);
+		this.entries = new ArrayList<String>();
+		this.selected = new ArrayList<Boolean>();
+	}
+	
+	
+	
 	public boolean initialize() {
-		this.entryHeight = this.getH();
-		this.entryWidth = this.getW();
+		this.initEntryHeight = this.initH;
+		this.initEntryWidth = this.initW;
 		return true;
 		
 	}
@@ -67,6 +54,8 @@ public class DropDown extends Component<DropDown> {
 		float y = this.getY();
 		float w = this.getW();
 		float h = this.getH();
+		float entryWidth = this.convertDimension(this.initEntryWidth);
+		float entryHeight = this.convertDimension(this.initEntryHeight);
 		//displaying the title block
 		this.graphics.rectMode(PConstants.CORNER);
 		this.graphics.fill(this.fillColor);
@@ -109,21 +98,21 @@ public class DropDown extends Component<DropDown> {
 
 		this.graphics.strokeWeight(this.strokeWeight);
 		this.graphics.stroke(this.strokeColor);
-		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - this.entryWidth);
+		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - entryWidth);
 		float rectX = x + entryXOffset;
 		float rectY = y;
-		float textX = x + this.entryWidth * 0.02f + entryXOffset;
+		float textX = x + entryWidth * 0.02f + entryXOffset;
 		float textY = y + h / 2.0f - this.graphics.textAscent() * this.textScalar;
 		if (this.isVertical) {
 			rectY += h;
-			textY += h / 2.0f + this.entryHeight / 2.0f;
+			textY += h / 2.0f + entryHeight / 2.0f;
 		} else {
-			rectY += h / 2.0f - this.entryHeight / 2.0f;
-			rectX += this.entryWidth;
-			textX += this.entryWidth;
+			rectY += h / 2.0f - entryHeight / 2.0f;
+			rectX += entryWidth;
+			textX += entryWidth;
 		}
 		if (this.entryHorizontalOrientation == PConstants.CENTER) {
-			textX += this.entryWidth * 0.48f;
+			textX += entryWidth * 0.48f;
 		}
 		this.graphics.textAlign(this.entryHorizontalOrientation, PConstants.CENTER);
 		for (int i = 0; i < this.entries.size(); i++) {
@@ -132,19 +121,19 @@ public class DropDown extends Component<DropDown> {
 			float extraWidth = 0;
 			if (this.selected.get(i)) {
 				this.graphics.fill(this.selectedColor);
-				extraWidth += this.entryWidth * 0.1f;
+				extraWidth += entryWidth * 0.1f;
 			} else {
 				this.graphics.fill(this.fillColor);
 			}
-			this.graphics.rect(rectX - extraWidth / 2.0f, rectY, this.entryWidth + extraWidth, this.entryHeight, this.rounding);
+			this.graphics.rect(rectX - extraWidth / 2.0f, rectY, entryWidth + extraWidth, entryHeight, this.rounding);
 			this.graphics.fill(this.textColor);
-			this.graphics.text(entry, textX + this.entryWidth * 0.02f, textY);
+			this.graphics.text(entry, textX + entryWidth * 0.02f, textY);
 			if (this.isVertical) {
-				rectY += this.entryHeight;
-				textY += this.entryHeight;
+				rectY += entryHeight;
+				textY += entryHeight;
 			} else {
-				rectX += this.entryWidth;
-				textX += this.entryWidth;
+				rectX += entryWidth;
+				textX += entryWidth;
 			}
 		}
 	}
@@ -155,10 +144,12 @@ public class DropDown extends Component<DropDown> {
 		float y = this.getY();
 		float w = this.getW();
 		float h = this.getH();
-		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - this.entryWidth);
-		if (this.myParent.mouseX >= x + entryXOffset && this.myParent.mouseX <= x + this.entryWidth + entryXOffset) {
+		float entryWidth = this.convertDimension(this.initEntryWidth);
+		float entryHeight = this.convertDimension(this.initEntryHeight);
+		float entryXOffset = PApplet.map(this.entryVsTitleOrientationPercent, 0, 1, 0, w - entryWidth);
+		if (this.myParent.mouseX >= x + entryXOffset && this.myParent.mouseX <= x + entryWidth + entryXOffset) {
 			for (int i = 0; i < this.entries.size(); i++) {
-				if (this.myParent.mouseY >= y + h + this.entryHeight * i && this.myParent.mouseY <= y + h + this.entryHeight * (i + 1)) {
+				if (this.myParent.mouseY >= y + h + entryHeight * i && this.myParent.mouseY <= y + h + entryHeight * (i + 1)) {
 					return i;
 				}
 			}
@@ -240,13 +231,13 @@ public class DropDown extends Component<DropDown> {
 	}
 
 
-	public DropDown setEntryHeight(float e_) {
-		this.entryHeight = e_;
+	public DropDown setEntryHeight(String e_) {
+		this.initEntryHeight = e_;
 		return this;
 	}
 
-	public DropDown setEntryWidth(float e_) {
-		this.entryWidth = e_;
+	public DropDown setEntryWidth(String e_) {
+		this.initEntryWidth = e_;
 		return this;
 	}
 

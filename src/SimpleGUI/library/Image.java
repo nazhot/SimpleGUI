@@ -1,22 +1,22 @@
 package SimpleGUI;
 
 import processing.core.*;
+import processing.data.JSONObject;
 
 
 public class Image extends Component<Image> {
 
-	private String imageFileName;
+	private String imageFileName = "";
 
 	public Image(PApplet myParent, String x_, String y_, String w_, String h_) {
 		super(myParent, x_, y_, w_, h_);
-		this.TYPE = "Image";
-		this.imageFileName = "";
 	}
 	
 	public Image(PApplet myParent, float x_, float y_, float w_, float h_) {
 		super(myParent, x_, y_, w_, h_);
-		this.TYPE = "Image";
-		this.imageFileName = "";
+	}
+	public Image(PApplet myParent, JSONObject settings) {
+		super(myParent, settings);
 	}
 
 

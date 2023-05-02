@@ -1,30 +1,31 @@
 package SimpleGUI;
 
 import processing.core.*;
+import processing.data.JSONObject;
 
 
 public class Button extends Component<Button> {
-	private String shape;     //circle, rectangle
-	private int shapeMode;    //how processing should display the shape, CORNER, CORNERS, RADIUS, CENTER
+	private String shape = "rectangle";     //circle, rectangle
+	private int shapeMode = PConstants.CORNER;;    //how processing should display the shape, CORNER, CORNERS, RADIUS, CENTER
 	private int hoverColor; //color to turn the fill color when the mouse is hovered over the button
-	private boolean asLabel;  //whether the button should just be a label or an actual button. Label disables hoverColor, clicks still register
+	private boolean asLabel = false;;  //whether the button should just be a label or an actual button. Label disables hoverColor, clicks still register
 
 	public Button(PApplet theParent, String x_, String y_, String w_, String h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "Button";
-		this.shape = "rectangle";
-		this.shapeMode = PConstants.CORNER;
-		this.asLabel = false;
-	}
-	
-	public Button(PApplet theParent, float x_, float y_, float w_, float h_) {
-		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "Button";
-		this.shape = "rectangle";
-		this.shapeMode = PConstants.CORNER;
-		this.asLabel = false;
+
 	}
 
+	public Button(PApplet theParent, float x_, float y_, float w_, float h_) {
+		super(theParent, x_, y_, w_, h_);
+	}
+
+	public Button(PApplet theParent, JSONObject settings) {
+		super(theParent, settings);
+	}
+
+	public void generalInitialize() {
+
+	}
 	public void draw() {
 		float x = this.getX();
 		float y = this.getY();
@@ -45,6 +46,8 @@ public class Button extends Component<Button> {
 		}
 
 		//set up all of the parameters for shape drawing
+
+
 		this.graphics.rectMode(this.shapeMode);
 		this.graphics.ellipseMode(this.shapeMode);
 		this.graphics.textAlign(PConstants.CENTER, PConstants.CENTER);
@@ -117,8 +120,18 @@ public class Button extends Component<Button> {
 		return this;
 	}
 
-	public Button setHoverColor(int h_) {
-		hoverColor = h_;
+	public Button setShapeMode(String s_) {
+		int mode = SimpleGUI.convertPConstant(s_);
+		if (mode != -1) {
+			this.shapeMode = mode;
+			return this;
+		}
+		PApplet.println("INFO: attempted to set shapeMode of " + this.name + " (" + this.TYPE + ") to " + s_ + " and FAILED. shapeMode is still set to " + this.shapeMode);
+		return this;
+	}
+
+	public Button setHoverColor(Integer h_) {
+		this.hoverColor = h_;
 		return this;
 	}
 

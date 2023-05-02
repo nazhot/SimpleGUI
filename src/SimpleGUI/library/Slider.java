@@ -1,55 +1,39 @@
 package SimpleGUI;
 
 import processing.core.*;
+import processing.data.JSONObject;
 
 
 public class Slider extends Component<Slider> {
-	private float min;
-	private float max;
+	private float min = 0;
+	private float max = 1;
 	private float slidePosition;
 	private int lineColor;
 	private int tickColor;
 	private int slideFillColor;
 	private int slideStrokeColor;
-	private float lineWeight;
-	private float tickWeight;
-	private float slideStrokeWeight;
-	private boolean slideMoving;
-	private String titlePosition; //"TOP", "LEFT", "RIGHT", "BOTTOM"
-	private boolean isDefinedJumps;
-	private float jumpAmount;
-	private int numJumps;
+	private float lineWeight = 4;
+	private float tickWeight = 2;
+	private float slideStrokeWeight = 3;
+	private boolean slideMoving = false;
+	private String titlePosition = "LEFT"; //"TOP", "LEFT", "RIGHT", "BOTTOM"
+	private boolean isDefinedJumps = false;
+	private float jumpAmount = 0;
+	private int numJumps = 0;
 
 
 	public Slider(PApplet theParent, String x_, String y_, String w_, String h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "Slider";
-		this.min = 0;
-		this.max = 1;
-		this.lineWeight = 4;
-		this.tickWeight = 2;
-		this.slideStrokeWeight = 3;
-		this.slideMoving = false;
-		this.titlePosition = "LEFT";
-		this.isDefinedJumps = false;
-		this.jumpAmount = 0;
-		this.numJumps = 0;
 		this.value = "0";
 	}
 	
 	public Slider(PApplet theParent, float x_, float y_, float w_, float h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "Slider";
-		this.min = 0;
-		this.max = 1;
-		this.lineWeight = 4;
-		this.tickWeight = 2;
-		this.slideStrokeWeight = 3;
-		this.slideMoving = false;
-		this.titlePosition = "LEFT";
-		this.isDefinedJumps = false;
-		this.jumpAmount = 0;
-		this.numJumps = 0;
+		this.value = "0";
+	}
+	
+	public Slider(PApplet theParent, JSONObject settings) {
+		super(theParent, settings);
 		this.value = "0";
 	}
 	

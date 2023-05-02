@@ -1,32 +1,27 @@
 package SimpleGUI;
 
 import processing.core.*;
+import processing.data.JSONObject;
 
 
 public class TextBox extends Component<TextBox> {
 	private int hoverColor;
-	private int horizontalOrientation;
-	private boolean isSelected;
-	private boolean keyReleased;
-	private String defaultValue;
+	private int horizontalOrientation = PConstants.LEFT;
+	private boolean isSelected = false;
+	private boolean keyReleased = true;
+	private String defaultValue = "";
 
 
 	public TextBox(PApplet theParent, String x_, String y_, String w_, String h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "TextBox";
-		horizontalOrientation = PConstants.LEFT;
-		this.isSelected = false;
-		this.keyReleased = true;
-		this.defaultValue = "";
 	}
 	
 	public TextBox(PApplet theParent, float x_, float y_, float w_, float h_) {
 		super(theParent, x_, y_, w_, h_);
-		this.TYPE = "TextBox";
-		horizontalOrientation = PConstants.LEFT;
-		this.isSelected = false;
-		this.keyReleased = true;
-		this.defaultValue = "";
+	}
+	
+	public TextBox(PApplet myParent, JSONObject settings) {
+		super(myParent, settings);
 	}
 
 	public void draw() {
