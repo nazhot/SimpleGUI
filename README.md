@@ -40,11 +40,16 @@ v0.0.1
   - Slider
   - Text
   - TextBox
+- Controller is able to print a hierarchy of all of the screens/their components
   
 ## Previous Versions
 N/A
 
 ## 🔜 Hopeful Features
+- Update the sizing functionality so that it only performs the conversion on setting/parent updates. Currently, every time an object is being drawn it is recalculating its dimensions/position
+- Allow components to be positioned based on other components instead of just parent/absolute
+  - Basically just steal a lot of css/html functionality
+- Allow Screens/Components to be exported/imported as files
   
 ## 🪚 Built With
 - Java
