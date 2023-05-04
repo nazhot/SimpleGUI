@@ -8,6 +8,7 @@
 ---
 
 - [📖 Overview](#-overview)
+- [📝 Examples](#-examples)
 - [⭐️ Current Version](#-current-version)
 - [🔜 Hopeful Features](#-hopeful-features)
 - [🪚 Built With](#-built-with)
@@ -30,6 +31,15 @@ These are the containers for all of the components. Multiple can be created, and
 **General Components**
 
 Components can be initialized with a size/position, or with a json that defines it's settings. Sizes can either be an absolute pixel value (ex: ```123a```), or a percentage of the screen's width/height (ex: ```0.5w, 1h```). Components have their own code to draw themselves, determine if they've been clicked, determine if they're being moused over, and can be given a ```Payload```, which is a JSONObject that is used for running custom functions from a component.
+
+## 📝 Examples
+**Simple Setup with Button**
+
+The following code is all that is needed to setup the controller, add a screen that takes up the entire window, and add a simple button. It also includes code that checks if the button was clicked, and changes the background color if it is.
+
+<img src="./.github/resources/libraryCodeExample.jpg">
+
+<img src="./.github/resources/libraryScreenExample.jpg">
 
 ## ⭐️ Current Version
 v0.0.1
